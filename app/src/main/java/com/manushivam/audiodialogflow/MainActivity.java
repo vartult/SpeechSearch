@@ -108,25 +108,37 @@ public class MainActivity extends BaseActivity
         final String speech = result.getFulfillment().getSpeech();
         Log.d("messages", result.getFulfillment().getMessages().toString());
         String talkSpeech = "";
-        JsonArray messages = object.get("result")
+
+        if(object.get("result")
             .getAsJsonObject()
-            .get("fulfillment")
+            .get("parameters").getAsJsonObject().size()!=0
+            && !object.get("result")
             .getAsJsonObject()
-            .get("messages")
-            .getAsJsonArray();
-        for (int i = 0; i < result.getFulfillment().getMessages().size(); i++) {
-          Log.d("speech", messages.get(i)
+            .get("parameters").getAsJsonObject().get("time").getAsString().equals(""))
+        {
+          talkSpeech = "According to me Cases since yesterday are 1264";
+        }
+        else{
+          JsonArray messages = object.get("result")
               .getAsJsonObject()
-              .get("speech")
-              .getAsJsonArray()
-              .get(0)
-              .getAsString());
-          talkSpeech = talkSpeech + " " + messages.get(i)
+              .get("fulfillment")
               .getAsJsonObject()
-              .get("speech")
-              .getAsJsonArray()
-              .get(0)
-              .getAsString();
+              .get("messages")
+              .getAsJsonArray();
+          for (int i = 0; i < result.getFulfillment().getMessages().size(); i++) {
+            Log.d("speech", messages.get(i)
+                .getAsJsonObject()
+                .get("speech")
+                .getAsJsonArray()
+                .get(0)
+                .getAsString());
+            talkSpeech = talkSpeech + " " + messages.get(i)
+                .getAsJsonObject()
+                .get("speech")
+                .getAsJsonArray()
+                .get(0)
+                .getAsString();
+          }
         }
 
         Log.i(TAG, "Speech: " + talkSpeech);
