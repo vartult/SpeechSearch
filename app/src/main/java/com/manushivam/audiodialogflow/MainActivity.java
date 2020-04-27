@@ -112,9 +112,9 @@ public class MainActivity extends BaseActivity
         if(object.get("result")
             .getAsJsonObject()
             .get("parameters").getAsJsonObject().size()!=0
-            && !object.get("result")
+            && object.get("result")
             .getAsJsonObject()
-            .get("parameters").getAsJsonObject().get("time").getAsString().equals(""))
+            .get("parameters").getAsJsonObject().get("time").getAsJsonArray().size()!=0)
         {
           talkSpeech = "According to me Cases since yesterday are 1264";
         }
